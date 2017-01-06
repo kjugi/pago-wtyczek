@@ -4,6 +4,7 @@ body{
 	padding:0px;
 	font-family: sans-serif;
 	max-height: 500px;
+	white-space: normal;
 }
 
 .text-xs-center{
@@ -79,6 +80,7 @@ svg:hover{
 
 .handler__text{
 	margin:0px;
+    white-space: normal;
 }
 
 .handler__text a{
@@ -94,6 +96,34 @@ svg:hover{
 .handler__loader{
 	margin:0px auto;
 	display: block;
+}
+
+.handler__text-live{
+	color:#fc3636;
+}
+
+.handler__text__stream{
+	display: block;
+	margin:0px auto;
+}
+
+.handler__text-button-watch{
+    background: #6441a4;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 5px 10px 5px;
+    width: 100%;
+    display: block;
+    text-align: center;
+    transition:all .2s linear;
+}
+
+.handler__text-button-watch:hover{
+	background:#513584;
+}
+
+.handler__text-button-watch:hover + .handler__text__stream{
+	background: #000;
 }
 
 .footer{
