@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <!--
  This page is shown when the extension button is clicked, because the
  "browser_action" field in manifest.json contains the "default_popup" key with
@@ -20,11 +20,35 @@
         max-width: 400px;
       }
     </style>
+    <link rel="stylesheet" type="text/css" href="popup.css">
     <script src="popup.js"></script>
   </head>
   <body>
-    <h1>Powiadamiacz PAGO</h1>
-    <div id="status"></div>
+    <div class="menu">
+      <div class="menu__half">
+        <a href="http://twitch.tv/pago3" target="_blank"><img src="icons/icon_home.png"/><p class="menu__link">PAGO3</p></a>
+      </div>
+      <div class="menu__half">
+        <div class="menu__settings">
+          <figure id="settings">
+            <svg class="svg-gear" height="30" viewBox="0 0 16 16" width="16">
+              <path d="M6.359 0h3.282l1.436 2.8h3.282L16 5.2 14.359 8 16 10.8l-1.641 2.4h-3.282L9.64 16H6.359l-1.436-2.8H1.641L0 10.8 1.641 8 0 5.2l1.641-2.4h3.282L6.36 0zM8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+            </svg>
+          </figure>
+        </div>
+      </div>
+    </div>
+
+    <div class="handler">
+      <h1 class="handler__title">Powiadamiacz PAGO</h1>
+      <div id="status"><img src="icons/loader.gif" class="handler__loader"/></div>
+    </div>
+
+    <div class="footer">
+      <div class="footer__social">
+          <a href='https://www.facebook.com/DonPAGO/' target='_blank'><img src='icons/fb_logo.png'/></a>
+      </div>
+    </div>
   </body>
 </html>
 
