@@ -44,11 +44,12 @@ function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
 		    var streamGame = response.stream.game;
 		    var streamLiveViewers = response.stream.viewers;
 		    var streamLiveDate = response.stream.created_at;
+		    var streamPreviewMedium = response.stream.preview.medium;
 
 		    console.assert(
-		        typeof response == 'object', 'Unexpected respose from the TWITCH API!');
-		    streamOn(streamTitle, streamGame, streamLiveViewers, streamLiveDate);
+		        typeof response == 'object', 'Unexpected response from the TWITCH API!');
 		    chrome.browserAction.setIcon({path: "icons/icon_1.png"});
+		    streamOn(streamTitle, streamGame, streamLiveViewers, streamLiveDate, streamPreviewMedium);
 		}
 		else{
 			var streamNull = "Brak streama!";
@@ -71,12 +72,51 @@ function renderStatus(statusText) {
 
 document.addEventListener('DOMContentLoaded', function() {
 
-	getTwitchStreamStatus(function(streamTitle, streamGame, streamLiveViewers, streamLiveDate) {
+	getTwitchStreamStatus(function(streamTitle, streamGame, streamLiveViewers, streamLiveDate, streamPreviewMedium) {
 
 	  //renderStatus('Stream title:' + streamTitle);
 	  var status = document.getElementById('status');
+	  var dateNowTimestamp = new Date();
+	  var streamStartDateTimestamp = new Date(streamLiveDate);
 
-	  status.innerHTML = "<p class='handler__text'>Tytuł streama: "+streamTitle+"</p><p class='handler__text'>Gra: "+streamGame+"</p><p class='handler__text'>Bynie online: <span class='handler__text-live'>"+streamLiveViewers+"</span></p><p class='handler__text'>Live od: "+streamLiveDate+"</p>";
+	  var streamDuring = dateNowTimestamp - streamStartDateTimestamp;
+
+	  if(streamDuring > 0){
+	  	var seconds = (streamDuring/1000)%60;
+	  	var minutes = ((streamDuring-seconds)/1000)/60;
+
+	  	var outputTime = "";
+
+	  	var intMinutes = parseInt(minutes);
+	  	var intSeconds = parseInt(seconds);
+
+	  	if(minutes == 1){
+	  		outputTime = intMinutes+"minuty ";
+	  		if(seconds > 1){
+	  			outputTime += intSeconds+"sekund";
+	  		}
+	  		else if(seconds == 1){
+	  			outputTime += intSeconds+"sekundy";
+	  		}
+	  	}
+	  	else if(minutes == 0){
+	  		outputTime = intSeconds+"sekund";
+	  	}
+	  	else{
+	  		outputTime = intMinutes+"minut ";
+	  		if(seconds > 1){
+	  			outputTime += intSeconds+"sekund";
+	  		}
+	  		else if(seconds == 1){
+	  			outputTime += intSeconds+"sekundy";
+	  		}
+	  	}
+	  }
+	  else{
+	  	errorCallback('Time error 1');
+	  }
+
+		status.innerHTML = "<p class='handler__text'>Tytuł streama: "+streamTitle+"</p><p class='handler__text'>Gra: "+streamGame+"</p><p class='handler__text'>Bynie online: <span class='handler__text-live'>"+streamLiveViewers+"</span></p><p class='handler__text'>Live trwa od: "+outputTime+"</p><a href='https://twitch.tv/pago3/' target='_blank' class='handler__text__stream text-xs-center'><img src='"+streamPreviewMedium+"'/></a><a href='https://twitch.tv/pago3' target='_blank' class='handler__text-button-watch'>Oglądaj bynia!</a>";
 	},
 	function(streamOff){
 		var status = document.getElementById('status');
