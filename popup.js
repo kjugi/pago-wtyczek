@@ -51,7 +51,7 @@ function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
 		    chrome.browserAction.setIcon({path: "icons/icon_1.png"});
 		}
 		else{
-			var streamNull = "Brak streama";
+			var streamNull = "Brak streama!";
 
 			console.assert(
 				typeof response == 'object', 'Unexpected response from the TWITCH API!');
