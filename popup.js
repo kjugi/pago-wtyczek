@@ -48,14 +48,14 @@ function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
 		    console.assert(
 		        typeof response == 'object', 'Unexpected respose from the TWITCH API!');
 		    streamOn(streamTitle, streamGame, streamLiveViewers, streamLiveDate);
-		    chrome.browserAction.setIcon({path: "icon_1.png"});
+		    chrome.browserAction.setIcon({path: "icons/icon_1.png"});
 		}
 		else{
 			var streamNull = "Brak streama";
 
 			console.assert(
 				typeof response == 'object', 'Unexpected response from the TWITCH API!');
-			chrome.browserAction.setIcon({path: "icon_default.png"});
+			chrome.browserAction.setIcon({path: "icons/icon_default.png"});
 			streamOff(streamNull);
 		}
 	};
@@ -73,16 +73,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	getTwitchStreamStatus(function(streamTitle, streamGame, streamLiveViewers, streamLiveDate) {
 
-	  renderStatus('Stream title:' + streamTitle);
+	  //renderStatus('Stream title:' + streamTitle);
 	  var status = document.getElementById('status');
 
-	  status.title = streamTitle;
-	  status.game = streamGame;
-	  status.liveViewers = streamLiveViewers;
-	  status.uptime = streamLiveDate;
+	  status.innerHTML = "<p class='handler__text'>Tytuł streama: "+streamTitle+"</p><p class='handler__text'>Gra: "+streamGame+"</p><p class='handler__text'>Bynie online: <span class='handler__text-live'>"+streamLiveViewers+"</span></p><p class='handler__text'>Live od: "+streamLiveDate+"</p>";
 	},
 	function(streamOff){
-		renderStatus(streamOff);
+		var status = document.getElementById('status');
+
+		status.innerHTML = "<p class='handler__text text-xs-center'>"+streamOff+"</p><p class='handler__text'>Sprawdź co na naszej grupie: <a href='https://www.facebook.com/groups/1721694058053294/' target='_blank'>Bynie Pągowskiego</a></p>";
 	},
 	function(errorMessage) {
 	  renderStatus('Cannot display information. ' + errorMessage);
