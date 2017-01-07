@@ -125,4 +125,41 @@ document.addEventListener('DOMContentLoaded', function() {
 	function(errorMessage) {
 		renderStatus('Cannot display information. ' + errorMessage);
 	});
+
+	document.getElementById("gear").addEventListener("click", function(){
+		var divOptions = document.getElementById("options");
+		var classList = divOptions.className.split(/\s+/);
+
+		if(classList[1] == "none"){
+			divOptions.className = divOptions.className.replace(/\bnone\b/,'');
+		}
+		else{
+			divOptions.className += "none";
+		}
+	});
+
+	document.getElementById("range").addEventListener("mousemove", function(){
+		var value = document.getElementById("range").value;
+		document.getElementById("value").innerHTML = value+" minut";
+
+		return value;
+	});
+
+	document.getElementById("timeout").addEventListener("click", function(){
+		var valueCheckbox = document.getElementById("timeout").checked;
+
+		if(valueCheckbox == true){
+			document.getElementById("range").disabled = false;
+			document.getElementById("range").value = 60;
+			document.getElementById("value").innerHTML = "60 minut";
+		}
+		else{
+			document.getElementById("range").disabled = true;
+			document.getElementById("value").innerHTML = "Opcja wyłaczona";
+		}
+	});
+
+	document.getElementById("saveFunctions").addEventListener("click", function(){
+
+	});
 });
