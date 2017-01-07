@@ -12,7 +12,8 @@
 	},
 
 	"permissions":[
-		"https://api.twitch.tv/kraken"
+		"https://api.twitch.tv/kraken",
+		"cookies"
 	],
 
 	"background": {
