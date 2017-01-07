@@ -11,6 +11,11 @@ body{
 	text-align: center;
 }
 
+.image-center{
+	margin:0px auto;
+	display: block;
+}
+
 svg{
 	fill:#fff;
 	transition: fill .2s linear;

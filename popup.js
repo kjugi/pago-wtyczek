@@ -48,7 +48,6 @@ function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
 
 		    console.assert(
 		        typeof response == 'object', 'Unexpected response from the TWITCH API!');
-		    chrome.browserAction.setIcon({path: "icons/icon_1.png"});
 		    streamOn(streamTitle, streamGame, streamLiveViewers, streamLiveDate, streamPreviewMedium);
 		}
 		else{
@@ -56,7 +55,6 @@ function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
 
 			console.assert(
 				typeof response == 'object', 'Unexpected response from the TWITCH API!');
-			chrome.browserAction.setIcon({path: "icons/icon_default.png"});
 			streamOff(streamNull);
 		}
 	};
@@ -67,14 +65,13 @@ function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
 }
 
 function renderStatus(statusText) {
-  document.getElementById('status').textContent = statusText;
+  	document.getElementById('status').textContent = statusText;
 }
 
 document.addEventListener('DOMContentLoaded', function() {
 
 	getTwitchStreamStatus(function(streamTitle, streamGame, streamLiveViewers, streamLiveDate, streamPreviewMedium) {
 
-	  //renderStatus('Stream title:' + streamTitle);
 	  var status = document.getElementById('status');
 	  var dateNowTimestamp = new Date();
 	  var streamStartDateTimestamp = new Date(streamLiveDate);
@@ -116,14 +113,16 @@ document.addEventListener('DOMContentLoaded', function() {
 	  	errorCallback('Time error 1');
 	  }
 
+	  	chrome.browserAction.setIcon({path: "icons/icon_1.png"});
 		status.innerHTML = "<p class='handler__text'>Tytuł streama: "+streamTitle+"</p><p class='handler__text'>Gra: "+streamGame+"</p><p class='handler__text'>Bynie online: <span class='handler__text-live'>"+streamLiveViewers+"</span></p><p class='handler__text'>Live trwa od: "+outputTime+"</p><a href='https://twitch.tv/pago3/' target='_blank' class='handler__text__stream text-xs-center'><img src='"+streamPreviewMedium+"'/></a><a href='https://twitch.tv/pago3' target='_blank' class='handler__text-button-watch'>Oglądaj bynia!</a>";
 	},
 	function(streamOff){
 		var status = document.getElementById('status');
 
-		status.innerHTML = "<p class='handler__text text-xs-center'>"+streamOff+"</p><p class='handler__text'>Sprawdź co na naszej grupie: <a href='https://www.facebook.com/groups/1721694058053294/' target='_blank'>Bynie Pągowskiego</a></p>";
+		chrome.browserAction.setIcon({path: "icons/icon_default.png"});
+		status.innerHTML = "<p class='handler__text text-xs-center'>"+streamOff+"</p><img src='icons/dead_glitch.png' class='image-center'/><p class='handler__text'>Sprawdź co na naszej grupie: <a href='https://www.facebook.com/groups/1721694058053294/' target='_blank'>Bynie Pągowskiego</a></p>";
 	},
 	function(errorMessage) {
-	  renderStatus('Cannot display information. ' + errorMessage);
+		renderStatus('Cannot display information. ' + errorMessage);
 	});
 });
