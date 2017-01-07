@@ -31,7 +31,7 @@
       <div class="menu__half">
         <div class="menu__settings">
           <figure id="settings">
-            <svg class="svg-gear" height="30" viewBox="0 0 16 16" width="16">
+            <svg class="svg-gear" id="gear" height="30" viewBox="0 0 16 16" width="16">
               <path d="M6.359 0h3.282l1.436 2.8h3.282L16 5.2 14.359 8 16 10.8l-1.641 2.4h-3.282L9.64 16H6.359l-1.436-2.8H1.641L0 10.8 1.641 8 0 5.2l1.641-2.4h3.282L6.36 0zM8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
             </svg>
           </figure>
@@ -42,6 +42,25 @@
     <div class="handler">
       <h1 class="handler__title">Powiadamiacz PAGO</h1>
       <div id="status"><img src="icons/loader.gif" class="handler__loader"/></div>
+    </div>
+
+    <div id="options" class="options none">
+      <h1 class="options__title text-xs-center">Ustawienia wtyczki</h1>
+
+      <div class="options__option">
+        
+        <input type="checkbox" id="timeout" name="timeout" checked>
+        <label for="timeout" class="options__option__text">Okresowe sprawdzanie streama</label>
+      </div>
+
+      <div class="options__option">
+        <label for="range" class="options__option__text">Co ile minut ma sprawdzać stream?</label>
+        <input type="range" id="range" name="range" value="60" min="1" max="240"><div id="value">60 minut</div>
+      </div>
+
+      <div class="options__option">
+        <button id="saveFunctions" class="options__option__button text-xs-center image-center">Zapisz opcje</button>
+      </div>
     </div>
 
     <div class="footer">
