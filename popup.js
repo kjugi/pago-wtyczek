@@ -6,6 +6,7 @@ Kappa
 #PAPUT
 */
 
+// function which getting information from TWTICH API
 function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
 	//one streamer extension PAGO3
 	//demo mode: on
@@ -64,12 +65,14 @@ function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
 	xhr.send(data);
 }
 
+//rendering status in popup
 function renderStatus(statusText) {
   	document.getElementById('status').textContent = statusText;
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-
+	
+	//checking stream status in twitch API - big function - START
 	getTwitchStreamStatus(function(streamTitle, streamGame, streamLiveViewers, streamLiveDate, streamPreviewMedium) {
 
 	  var status = document.getElementById('status');
@@ -125,7 +128,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	function(errorMessage) {
 		renderStatus('Cannot display information. ' + errorMessage);
 	});
+	//checking stream status in twitch API - big function - END
 
+	//showing/hiding options
 	document.getElementById("gear").addEventListener("click", function(){
 		var divOptions = document.getElementById("options");
 		var classList = divOptions.className.split(/\s+/);
@@ -138,13 +143,13 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	});
 
+	//disable/enable range - options
 	document.getElementById("range").addEventListener("mousemove", function(){
 		var value = document.getElementById("range").value;
 		document.getElementById("value").innerHTML = value+" minut";
-
-		return value;
 	});
 
+	//setting timeout time of call twitch api - options
 	document.getElementById("timeout").addEventListener("click", function(){
 		var valueCheckbox = document.getElementById("timeout").checked;
 
@@ -159,7 +164,45 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	});
 
+	//saving options into cookie - START
 	document.getElementById("saveFunctions").addEventListener("click", function(){
+		var arrayValues = new Array();
+		var checkboxValue = document.getElementById("timeout").checked;
+			arrayValues.push(checkboxValue);
 
+		if(checkboxValue === true){
+			var rangeValue = document.getElementById("range").value;
+
+			arrayValues.push(rangeValue);
+		}
+
+		var jsonArray = JSON.stringify(arrayValues);
+
+		chrome.cookies.set({
+			"name":"PagoExtensionCookie1",
+			"url":"https://api.twitch.tv/kraken",
+			"value":jsonArray,
+			"expirationDate": (new Date().getTime()/1000) + 3600
+		});
 	});
+
+	chrome.cookies.get({
+		"name":"PagoExtensionCookie1",
+		"url":"https://api.twitch.tv/kraken"
+	},function(cookie){
+		var cookieArray = JSON.parse(cookie.value);
+
+		if(cookieArray.length == 1){
+			document.getElementById("timeout").checked = cookieArray[0];
+			document.getElementById("range").disabled = true;
+			document.getElementById("value").innerHTML = "Opcja wyłaczona";
+		}
+		else if(cookieArray.length > 1){
+			document.getElementById("timeout").checked = cookieArray[0];
+			document.getElementById("range").disabled = false;
+			document.getElementById("range").value = cookieArray[1];
+			document.getElementById("value").innerHTML = cookieArray[1]+" minut";
+		}
+	});
+	//end saving options into cookie - END
 });
