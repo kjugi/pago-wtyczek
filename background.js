@@ -41,6 +41,9 @@ function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
 		    console.assert(
 		        typeof response == 'object', 'Unexpected response from the TWITCH API!');
 		    chrome.browserAction.setIcon({path: "icons/icon_1.png"});
+		    chrome.browserAction.setBadgeBackgroundColor({color:[208, 0, 24, 255]});
+ 			chrome.browserAction.setBadgeText({text:"ON"});
+
 		    streamOn(streamTitle, streamGame, streamLiveViewers, streamLiveDate, streamPreviewMedium);
 		}
 		else{
@@ -48,7 +51,10 @@ function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
 
 			console.assert(
 				typeof response == 'object', 'Unexpected response from the TWITCH API!');
+
 			chrome.browserAction.setIcon({path: "icons/icon_default.png"});
+			chrome.browserAction.setBadgeText({text: ''});
+
 			streamOff(streamNull);
 		}
 	};
@@ -58,16 +64,49 @@ function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
 	xhr.send(data);
 }
 
-setInterval(function(){
+//checking on welcome if stream is live function - START
+function checkLiveStream(){
 	getTwitchStreamStatus(function(streamTitle, streamGame, streamLiveViewers, streamLiveDate, streamPreviewMedium) {
 		chrome.browserAction.setIcon({path: "icons/icon_1.png"});
+		chrome.browserAction.setBadgeBackgroundColor({color:[208, 0, 24, 255]});
+ 		chrome.browserAction.setBadgeText({text:"ON"});
 	},
 	function(streamOff){
 		chrome.browserAction.setIcon({path: "icons/icon_default.png"});
+		chrome.browserAction.setBadgeText({text: ''});
 	},
 	function(errorMessage) {
-	  console.log('Cannot display information. ' + errorMessage);
+	  	console.log('Cannot display information. ' + errorMessage);
 	});
-},
-10000	
-);
+}
+checkLiveStream();
+//checking on welcome if stream is live function - END
+
+//getting localStorage - START
+function getOptions(){
+	chrome.storage.sync.get([
+		"options"
+	],function(items){
+		var itemsArray = JSON.parse(items.options);
+		var miliseconds, interval;
+
+		if(itemsArray.length == 1){
+			miliseconds = 0;
+			clearInterval(interval);
+		}
+		else if(itemsArray.length > 1){
+			miliseconds = itemsArray[1] * 60000;
+			interval = setInterval(checkLiveStream,miliseconds);
+		}
+		else{
+			miliseconds = 3600000;
+			interval = setInterval(checkLiveStream,miliseconds);
+		}
+	});
+}
+getOptions();
+//getting localStorage - END
+
+chrome.storage.onChanged.addListener(function(){
+	getOptions();
+});
