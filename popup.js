@@ -272,8 +272,14 @@ document.addEventListener('DOMContentLoaded', function() {
 /****
 
 TO DO:
-1) Voice alert when stream on
-2) nottifications in toolbar chrome - need permision
-3) minute word rendering function - not really needed
+1) Voice alert when stream on - only on first time - TO TEST
+4) ADD functionality in alert - WHEN user will check stream in manual way (click in extension) - disable audio playing (must check badget status before playing song - first idea)
+2) ADD voice volume in options
+3) ADD voice alert enable/disable in options
+4) nottifications in toolbar chrome - need permission/knowledge
+.
+.
+.
+x) minute word rendering function - not really needed
 
 ****/
