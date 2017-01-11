@@ -273,6 +273,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 TO DO:
 1) Voice alert when stream on
-3) minute word rendering function
+2) nottifications in toolbar chrome - need permision
+3) minute word rendering function - not really needed
 
 ****/
