@@ -6,6 +6,9 @@ Kappa
 #PAPUT
 */
 
+//variable to playing PAGO audio - łapki w góre
+var oneMoreTimeHomie = true;
+
 function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
 	//one streamer extension PAGO3
 	//demo mode: on
@@ -72,10 +75,16 @@ function checkLiveStream(){
 		chrome.browserAction.setIcon({path: "icons/icon_1.png"});
 		chrome.browserAction.setBadgeBackgroundColor({color:[208, 0, 24, 255]});
  		chrome.browserAction.setBadgeText({text:"ON"});
+
+ 		//start audio play - only when stream starts
+ 		playMusic();
 	},
 	function(streamOff){
 		chrome.browserAction.setIcon({path: "icons/icon_default.png"});
 		chrome.browserAction.setBadgeText({text: ''});
+
+		//to play again when stream went on
+		oneMoreTimeHomie = true;
 	},
 	function(errorMessage) {
 		showInfo("error");
@@ -109,6 +118,17 @@ function getOptions(){
 }
 getOptions();
 //getting localStorage - END
+
+//start audio play - only when stream starts
+function playMusic(){
+	if(oneMoreTimeHomie == true){
+		var audio = new Audio('audio/pago_lapki_w_gore.mp3');
+		audio.play();
+	}
+
+	//to stop playing till the stream will ends
+	oneMoreTimeHomie = false;
+}
 
 chrome.storage.onChanged.addListener(function(){
 	getOptions();
