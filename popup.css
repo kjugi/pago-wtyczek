@@ -290,6 +290,45 @@ input[type=range]:focus::-ms-fill-upper {
 
 /* end - styles to input range type - end */
 
+/* start - popup styles - start */
+
+.information{
+	color: #fff;
+    text-decoration: none;
+    padding: 10px 5px 10px 5px;
+    width: 190px;
+    display: block;
+    text-align: center;
+    transition:all .2s linear;
+    opacity:1;
+    position: fixed;
+    top: calc(50% - 19px);
+    left: 100px;
+    cursor: pointer;
+}
+
+.information__text{
+	margin:0px;
+	color:#fff;
+}
+
+.hidden-popup{
+	opacity: 0;
+	visibility: hidden;
+}
+
+#success{
+	background: #14b866;
+	border:1px solid #119a56;
+}
+
+#error{
+	background: #fc3636;
+	border:1px solid #d22c2c;
+}
+
+/* end - popup styles - end */
+
 div#value {
     color: #fc3636;
 }
