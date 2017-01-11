@@ -36,6 +36,7 @@ function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
 	    //error control - renderStatus("response: "+response);
 
 	    if (!response) {
+	      showInfo("error");
 	      errorCallback('No response from TWITCH API!');
 	      return;
 	    }
@@ -60,14 +61,10 @@ function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
 		}
 	};
 	xhr.onerror = function() {
+		showInfo("error");
 	    errorCallback('Network error.');
 	};
 	xhr.send(data);
-}
-
-//rendering status in popup
-function renderStatus(statusText) {
-  	document.getElementById('status').textContent = statusText;
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -114,6 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	  	}
 	  }
 	  else{
+	  	showInfo("error");
 	  	errorCallback('Time error 1');
 	  }
 
@@ -121,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	  	chrome.browserAction.setBadgeBackgroundColor({color:[208, 0, 24, 255]});
  		chrome.browserAction.setBadgeText({text:"ON"});
 
-		status.innerHTML = "<p class='handler__text'>Tytuł streama: "+streamTitle+"</p><p class='handler__text'>Gra: "+streamGame+"</p><p class='handler__text'>Bynie online: <span class='handler__text-live'>"+streamLiveViewers+"</span></p><p class='handler__text'>Live trwa od: "+outputTime+"</p><a href='https://twitch.tv/pago3/' target='_blank' class='handler__text__stream text-xs-center'><img src='"+streamPreviewMedium+"'/></a><a href='https://twitch.tv/pago3' target='_blank' class='handler__text-button-watch'>Oglądaj bynia!</a>";
+		status.innerHTML = "<p class='handler__text'>Tytuł streama: "+streamTitle+"</p><p class='handler__text'>Gra: "+streamGame+"</p><p class='handler__text'><figure id='live'><svg class='svg-live' height='30px' version='1.1' viewBox='0 0 16 16' width='16px' x='0px' y='0px'><path clip-rule='evenodd' d='M11,14H5H2v-1l3-3h2L5,8V2h6v6l-2,2h2l3,3v1H11z' fill-rule='evenodd'></path></svg></figure> Bynie online: <span class='handler__text-live'>"+streamLiveViewers+"</span></p><p class='handler__text'>Live trwa od: "+outputTime+"</p><a href='https://twitch.tv/pago3/' target='_blank' class='handler__text__stream text-xs-center'><img src='"+streamPreviewMedium+"'/></a><a href='https://twitch.tv/pago3' target='_blank' class='handler__text-button-watch'>Oglądaj bynia!</a>";
 	},
 	function(streamOff){
 		var status = document.getElementById('status');
@@ -132,6 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		status.innerHTML = "<p class='handler__text text-xs-center'>"+streamOff+"</p><img src='icons/dead_glitch.png' class='image-center'/><p class='handler__text'>Sprawdź co na naszej grupie: <a href='https://www.facebook.com/groups/1721694058053294/' target='_blank'>Bynie Pągowskiego</a></p>";
 	},
 	function(errorMessage) {
+		showInfo("error");
 		renderStatus('Cannot display information. ' + errorMessage);
 	});
 	//checking stream status in twitch API - big function - END
@@ -188,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		chrome.storage.sync.set({
 			"options":jsonArray
 		},function(){
-			//TO DO - alert with callback information: "Zapisano zmiany"
+			showInfo("success");
 		});
 	});
 
@@ -222,13 +221,58 @@ document.addEventListener('DOMContentLoaded', function() {
 	getOptions();
 	//end getting options from localStorage - END
 	//end saving options into localStorage - END
+
+	//showing success/error popup - START
+	function showInfo(whichInfo){
+		if(whichInfo == "success"){
+			var popup = document.getElementById("success");
+		}
+		else if(whichInfo == "error"){
+			var popup = document.getElementById("error");
+		}
+
+		var classList = popup.className.split(/\s+/);
+
+		if(classList[1] == "hidden-popup"){
+			popup.className = popup.className.replace(/\bhidden-popup\b/,'');
+		}
+
+		setTimeout(function(){
+			hideInfo(whichInfo);
+		},2000);
+	}
+
+	function hideInfo(whichInfoToHide) {
+		if(whichInfoToHide == "success"){
+			var popup = document.getElementById("success");
+		}
+		else if(whichInfoToHide == "error"){
+			var popup = document.getElementById("error");
+		}
+
+		var classList = popup.className.split(/\s+/);
+
+		if(classList[1] != "hidden-popup"){
+			popup.className += "hidden-popup";
+		}
+	}
+	//showing success/error popup - END
+
+	//hiding success/error popup onClick event - START
+	document.getElementById('success').addEventListener('click',function(){
+		hideInfo('success');
+	});
+
+	document.getElementById('error').addEventListener('click',function(){
+		hideInfo('error');
+	});
+	//hiding success/error popup onClick event - END
 });
 
 /****
 
 TO DO:
 1) Voice alert when stream on
-2) alert with callback information: "Zapisano zmiany"
 3) minute word rendering function
 
 ****/

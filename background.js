@@ -27,6 +27,7 @@ function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
 	    var response = JSON.parse(xhr.responseText);
 
 	    if (!response) {
+	      showInfo("error");
 	      errorCallback('No response from TWITCH API!');
 	      return;
 	    }
@@ -59,6 +60,7 @@ function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
 		}
 	};
 	xhr.onerror = function() {
+		showInfo("error");
 	    errorCallback('Network error.');
 	};
 	xhr.send(data);
@@ -76,6 +78,7 @@ function checkLiveStream(){
 		chrome.browserAction.setBadgeText({text: ''});
 	},
 	function(errorMessage) {
+		showInfo("error");
 	  	console.log('Cannot display information. ' + errorMessage);
 	});
 }
