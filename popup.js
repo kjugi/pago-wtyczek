@@ -268,17 +268,19 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 	//hiding success/error popup onClick event - END
 
-	//pause audio play when user clicked on icon
+	//pause audio play when user clicked on icon - by getting values from background.js
+	var backgroundPage = chrome.extension.getBackgroundPage();
+ 	backgroundPage.audio.pause();
 });
 
 /****
 
 TO DO:
-1) ADD functionality in alert - WHEN user will click in extension, disable audio playing (create audio tag, send ajax request in popup.js to background.js to pause - better option)
-2) ADD voice volume in options
-3) ADD voice alert enable/disable in options
-4) nottifications in toolbar chrome - need permission/knowledge
-5) ADD option with live iframe instead of img from stream + options with autoplay
+1) ADD voice volume in options
+2) ADD voice alert enable/disable in options
+3) nottifications in toolbar chrome - need permission/knowledge
+4) ADD option with live iframe instead of img from stream + options with autoplay
+5) review all errors
 .
 .
 .
