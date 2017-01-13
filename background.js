@@ -7,7 +7,7 @@ Kappa
 */
 
 //variable to playing PAGO audio - łapki w góre
-var oneMoreTimeHomie = true;
+var oneMoreTimeHomie = true, audio;
 
 function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
 	//one streamer extension PAGO3
@@ -44,9 +44,6 @@ function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
 
 		    console.assert(
 		        typeof response == 'object', 'Unexpected response from the TWITCH API!');
-		    chrome.browserAction.setIcon({path: "icons/icon_1.png"});
-		    chrome.browserAction.setBadgeBackgroundColor({color:[208, 0, 24, 255]});
- 			chrome.browserAction.setBadgeText({text:"ON"});
 
 		    streamOn(streamTitle, streamGame, streamLiveViewers, streamLiveDate, streamPreviewMedium);
 		}
@@ -55,9 +52,6 @@ function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
 
 			console.assert(
 				typeof response == 'object', 'Unexpected response from the TWITCH API!');
-
-			chrome.browserAction.setIcon({path: "icons/icon_default.png"});
-			chrome.browserAction.setBadgeText({text: ''});
 
 			streamOff(streamNull);
 		}
@@ -119,10 +113,15 @@ function getOptions(){
 getOptions();
 //getting localStorage - END
 
+//checking localStorage on change [new click on save button in options]
+chrome.storage.onChanged.addListener(function(){
+	getOptions();
+});
+
 //start audio play - only when stream starts
 function playMusic(){
 	if(oneMoreTimeHomie == true){
-		var audio = new Audio('audio/pago_lapki_w_gore.mp3');
+		audio = new Audio('audio/pago_lapki_w_gore.mp3');
 		audio.play();
 	}
 
@@ -130,6 +129,3 @@ function playMusic(){
 	oneMoreTimeHomie = false;
 }
 
-chrome.storage.onChanged.addListener(function(){
-	getOptions();
-});

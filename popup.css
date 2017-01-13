@@ -70,8 +70,9 @@ svg:hover{
 	outline:0px;
 }
 
-#settings{
+#settings, #live{
 	margin:0px;
+	display: inline-block;
 }
 
 .handler{
@@ -135,6 +136,10 @@ svg:hover{
 
 .handler__text-button-watch:hover + .handler__text__stream{
 	background: #000;
+}
+
+svg.svg-live{
+	fill:#fc3636;
 }
 
 #options{
