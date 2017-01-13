@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	  	chrome.browserAction.setBadgeBackgroundColor({color:[208, 0, 24, 255]});
  		chrome.browserAction.setBadgeText({text:"ON"});
 
-		status.innerHTML = "<p class='handler__text'>Tytuł streama: "+streamTitle+"</p><p class='handler__text'>Gra: "+streamGame+"</p><p class='handler__text'><figure id='live'><svg class='svg-live' height='30px' version='1.1' viewBox='0 0 16 16' width='16px' x='0px' y='0px'><path clip-rule='evenodd' d='M11,14H5H2v-1l3-3h2L5,8V2h6v6l-2,2h2l3,3v1H11z' fill-rule='evenodd'></path></svg></figure> Bynie online: <span class='handler__text-live'>"+streamLiveViewers+"</span></p><p class='handler__text'>Live trwa od: "+outputTime+"</p><a href='https://twitch.tv/pago3/' target='_blank' class='handler__text__stream text-xs-center'><img src='"+streamPreviewMedium+"'/></a><a href='https://twitch.tv/pago3' target='_blank' class='handler__text-button-watch'>Oglądaj bynia!</a>";
+		status.innerHTML = "<p class='handler__text'>Tytuł streama: "+streamTitle+"</p><p class='handler__text'>Gra: "+streamGame+"</p><p class='handler__text'> Bynie online: <span class='handler__text-live'>"+streamLiveViewers+"</span></p><p class='handler__text'>Live trwa od: "+outputTime+"</p><a href='https://twitch.tv/pago3/' target='_blank' class='handler__text__stream text-xs-center'><img src='"+streamPreviewMedium+"'/></a><a href='https://twitch.tv/pago3' target='_blank' class='handler__text-button-watch'>Oglądaj bynia!</a>";
 	},
 	function(streamOff){
 		var status = document.getElementById('status');
@@ -267,16 +267,18 @@ document.addEventListener('DOMContentLoaded', function() {
 		hideInfo('error');
 	});
 	//hiding success/error popup onClick event - END
+
+	//pause audio play when user clicked on icon
 });
 
 /****
 
 TO DO:
-1) Voice alert when stream on - only on first time - TO TEST
-4) ADD functionality in alert - WHEN user will check stream in manual way (click in extension) - disable audio playing (must check badget status before playing song - first idea)
+1) ADD functionality in alert - WHEN user will click in extension, disable audio playing (create audio tag, send ajax request in popup.js to background.js to pause - better option)
 2) ADD voice volume in options
 3) ADD voice alert enable/disable in options
 4) nottifications in toolbar chrome - need permission/knowledge
+5) ADD option with live iframe instead of img from stream + options with autoplay
 .
 .
 .
