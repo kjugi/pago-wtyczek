@@ -51,14 +51,23 @@
       <h1 class="options__title text-xs-center">Ustawienia wtyczki</h1>
 
       <div class="options__option">
-        
         <input type="checkbox" id="timeout" name="timeout" checked>
         <label for="timeout" class="options__option__text">Okresowe sprawdzanie streama</label>
       </div>
 
       <div class="options__option">
         <label for="range" class="options__option__text">Co ile minut ma sprawdzać stream?</label>
-        <input type="range" id="range" name="range" value="60" min="1" max="240"><div id="value">60 minut</div>
+        <input type="range" id="range" name="range" value="60" min="1" max="240"><div id="rangeValue">60 minut</div>
+      </div>
+
+      <div class="options__option">
+        <input type="checkbox" id="voiceAlert" name="voiceAlert" checked>
+        <label for="voiceAlert" class="options__option__text">Powiadomienie głosowe</label>
+      </div>
+
+      <div class="options__option">
+        <label for="volume" class="options__option__text">Poziom głośności</label>
+        <input type="range" id="volume" name="volume" value="50" min="1" max="100"><div id="volumeValue">50%</div>
       </div>
 
       <div class="options__option">
