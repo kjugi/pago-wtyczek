@@ -148,39 +148,66 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 	});
 
-	//disable/enable range - options
+	//range - options
 	document.getElementById("range").addEventListener("mousemove", function(){
-		var value = document.getElementById("range").value;
-		document.getElementById("value").innerHTML = value+" minut";
+		rangeOptions("range","rangeValue","min");
+	});
+	document.getElementById("volume").addEventListener("mousemove", function(){
+		rangeOptions("volume","volumeValue","%");
 	});
 
 	//setting timeout time of call twitch api - options
 	document.getElementById("timeout").addEventListener("click", function(){
-		var valueCheckbox = document.getElementById("timeout").checked;
+		var timeout = document.getElementById("timeout");
+		var range = document.getElementById("range");
+		var rangeValue = document.getElementById("rangeValue");
+
+		var valueCheckbox = timeout.checked;
 
 		if(valueCheckbox == true){
-			document.getElementById("timeout").checked = true;
-			document.getElementById("range").disabled = false;
-			document.getElementById("range").value = 60;
-			document.getElementById("value").innerHTML = "60 minut";
+			timeout.checked = true;
+			range.disabled = false;
+			range.value = 60;
+			rangeValue.innerHTML = "60min";
 		}
 		else{
-			document.getElementById("range").disabled = true;
-			document.getElementById("value").innerHTML = "Opcja wyłaczona";
+			range.disabled = true;
+			rangeValue.innerHTML = "Opcja wyłaczona";
+		}
+	});
+
+	//setting volume height of audio alert - options
+	document.getElementById("voiceAlert").addEventListener("click",function(){
+		var voiceAlert = document.getElementById("voiceAlert");
+		var volume = document.getElementById("volume");
+		var volumeValue = document.getElementById("volumeValue");
+
+		var valueCheckbox = voiceAlert.checked;
+
+		if(valueCheckbox == true){
+			voiceAlert.checked = true;
+			volume.disabled = false;
+			volume.value = 50;
+			volumeValue.innerHTML = "50%";
+		}
+		else{
+			volume.disabled = true;
+			volumeValue.innerHTML = "Opcja wyłaczona";
 		}
 	});
 
 	//saving options into localStorage - START
+	var arrayValues = new Array();
 	document.getElementById("saveFunctions").addEventListener("click", function(){
-		var arrayValues = new Array();
-		var checkboxValue = document.getElementById("timeout").checked;
-			arrayValues.push(checkboxValue);
+		arrayValues = [];
+		var timeoutCheckboxValue = document.getElementById("timeout").checked;
+		var voiceAlertCheckboxValue = document.getElementById("voiceAlert").checked;
 
-		if(checkboxValue === true){
-			var rangeValue = document.getElementById("range").value;
+			arrayValues.push(timeoutCheckboxValue);
+		pushToLocalStorage(timeoutCheckboxValue,"range");
 
-			arrayValues.push(rangeValue);
-		}
+			arrayValues.push(voiceAlertCheckboxValue);
+		pushToLocalStorage(voiceAlertCheckboxValue,"volume");
 
 		var jsonArray = JSON.stringify(arrayValues);
 
@@ -198,29 +225,77 @@ document.addEventListener('DOMContentLoaded', function() {
 		],function(items){
 			var itemsArray = JSON.parse(items.options);
 
-			if(itemsArray.length == 1){
-				document.getElementById("timeout").checked = itemsArray[0];
-				document.getElementById("range").disabled = true;
-				document.getElementById("value").innerHTML = "Opcja wyłaczona";
-			}
-			else if(itemsArray.length > 1){
-				document.getElementById("timeout").checked = itemsArray[0];
-				document.getElementById("range").disabled = false;
-				document.getElementById("range").value = itemsArray[1];
-				document.getElementById("value").innerHTML = itemsArray[1]+" minut";
+			//DOM elements - START
+			var timeout = document.getElementById("timeout");
+			var range = document.getElementById("range");
+			var rangeValue = document.getElementById("rangeValue");
+
+			var voiceAlert = document.getElementById("voiceAlert");
+			var volume = document.getElementById("volume");
+			var volumeValue = document.getElementById("volumeValue");
+			//DOM elements - END
+
+			if(itemsArray.length == 4){
+				if(itemsArray[0] === false && itemsArray[1] === false){
+					timeout.checked = itemsArray[0];
+					range.disabled = true;
+					rangeValue.innerHTML = "Opcja wyłaczona";
+				}
+				else{
+					timeout.checked = itemsArray[0];
+					range.disabled = false;
+					range.value = itemsArray[1];
+					rangeValue.innerHTML = itemsArray[1]+" minut";
+				}
+
+				if(itemsArray[2] === false && itemsArray[3] === false){
+					voiceAlert.checked = itemsArray[2];
+					volume.disabled = true;
+					volumeValue.innerHTML = "Opcja wyłaczona";
+				}
+				else{
+					voiceAlert.checked = itemsArray[2];
+					volume.disabled = false;
+					volume.value = itemsArray[3];
+					volumeValue.innerHTML = itemsArray[3]+"%";
+				}
 			}
 			else{
-				document.getElementById("timeout").checked = true;
-				document.getElementById("range").disabled = false;
-				document.getElementById("range").value = 60;
-				document.getElementById("value").innerHTML = "60 minut";
+				timeout.checked = true;
+				range.disabled = false;
+				range.value = 60;
+				rangeValue.innerHTML = "60 minut";
+
+				voiceAlert.checked = true;
+				volume.disabled = false;
+				volume.value = 50;
+				volumeValue.innerHTML = "50%";
 			}
 		});
 	}
-
 	getOptions();
 	//end getting options from localStorage - END
 	//end saving options into localStorage - END
+
+	//range - options - function - START
+	function rangeOptions(idRange, idReturnedValue, unit){
+		var value = document.getElementById(idRange).value;
+		document.getElementById(idReturnedValue).innerHTML = value+unit;
+	}
+	//range - options - function - END
+
+	//values - push to array - function - START
+	function pushToLocalStorage(booleanVar, idRange){
+		if(booleanVar === true){
+			var rangeValue = document.getElementById(idRange).value;
+
+			arrayValues.push(rangeValue);
+		}
+		else{
+			arrayValues.push(false);
+		}
+	}
+	//values - push to array - function - END
 
 	//showing success/error popup - START
 	function showInfo(whichInfo){
@@ -270,17 +345,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	//pause audio play when user clicked on icon - by getting values from background.js
 	var backgroundPage = chrome.extension.getBackgroundPage();
- 	backgroundPage.audio.pause();
+	if(typeof backgroundPage.audio != "undefined"){
+ 		backgroundPage.audio.pause();
+ 	}
 });
 
 /****
 
 TO DO:
-1) ADD voice volume in options
-2) ADD voice alert enable/disable in options
-3) nottifications in toolbar chrome - need permission/knowledge
-4) ADD option with live iframe instead of img from stream + options with autoplay
-5) review all errors
+1) nottifications in toolbar chrome - need permission/knowledge
+2) ADD option with live iframe instead of img from stream + options with autoplay
+3) review all errors
 .
 .
 .
