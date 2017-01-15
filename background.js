@@ -7,7 +7,7 @@ Kappa
 */
 
 //variable to playing PAGO audio - łapki w góre
-var oneMoreTimeHomie = true, audio;
+var oneMoreTimeHomie = true, audio, volumeLevelDecimal;
 
 function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
 	//one streamer extension PAGO3
@@ -70,8 +70,8 @@ function checkLiveStream(){
 		chrome.browserAction.setBadgeBackgroundColor({color:[208, 0, 24, 255]});
  		chrome.browserAction.setBadgeText({text:"ON"});
 
- 		//start audio play - only when stream starts
- 		playMusic();
+ 		//start audio play - only when stream start
+ 		playMusic(volumeLevelDecimal);
 	},
 	function(streamOff){
 		chrome.browserAction.setIcon({path: "icons/icon_default.png"});
@@ -94,19 +94,30 @@ function getOptions(){
 		"options"
 	],function(items){
 		var itemsArray = JSON.parse(items.options);
-		var miliseconds, interval;
+		var miliseconds, interval, volumeLevelPercent;
 
-		if(itemsArray.length == 1){
-			miliseconds = 0;
-			clearInterval(interval);
-		}
-		else if(itemsArray.length > 1){
-			miliseconds = itemsArray[1] * 60000;
-			interval = setInterval(checkLiveStream,miliseconds);
+		if(itemsArray.length == 4){
+			if(itemsArray[0] === false && itemsArray[1] === false){
+				miliseconds = 0;
+				clearInterval(interval);
+			}
+			else{
+				clearInterval(interval);
+				miliseconds = itemsArray[1] * 60000;
+				interval = setInterval(checkLiveStream, miliseconds);
+			}
+
+			if(itemsArray[2] != false && itemsArray[3] != false){
+				volumeLevelPercent = itemsArray[3];
+				volumeLevelDecimal = itemsArray[3] * 0.01;
+			}
 		}
 		else{
+			clearInterval(interval);
 			miliseconds = 3600000;
 			interval = setInterval(checkLiveStream,miliseconds);
+
+			volumeLevelDecimal = 0.5;
 		}
 	});
 }
@@ -119,10 +130,13 @@ chrome.storage.onChanged.addListener(function(){
 });
 
 //start audio play - only when stream starts
-function playMusic(){
-	if(oneMoreTimeHomie == true){
-		audio = new Audio('audio/pago_lapki_w_gore.mp3');
-		audio.play();
+function playMusic(volumeLevel){
+	if(typeof volumeLevel != "undefined"){
+		if(oneMoreTimeHomie == true){
+			audio = new Audio('audio/pago_lapki_w_gore.mp3');
+			audio.volume = volumeLevel;
+			audio.play();
+		}
 	}
 
 	//to stop playing till the stream will ends
