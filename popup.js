@@ -12,12 +12,6 @@ function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
 	//demo mode: on
 	//https://api.twitch.tv/kraken/streams/40378922?client_id=dlw882cebptkltr33a4s0ejzongxfg
 
-	/*xhr.addEventListener("readystatechange", function () {
-	  if (this.readyState === 4) {
-	    console.log(this.responseText);
-	  }
-	});*/
-
 	var streamerID = "40378922";
 	var client_id = "dlw882cebptkltr33a4s0ejzongxfg";
 	var url = "https://api.twitch.tv/kraken/streams/";
@@ -356,6 +350,7 @@ TO DO:
 1) nottifications in toolbar chrome - need permission/knowledge
 2) ADD option with live iframe instead of img from stream + options with autoplay
 3) review all errors
+4) add youtube the newest movie and show it with link && title instead fb group (refreshing more times)
 .
 .
 .
