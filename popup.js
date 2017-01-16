@@ -299,10 +299,9 @@ document.addEventListener('DOMContentLoaded', function() {
 /****
 
 TO DO:
-1) ADD option with live iframe instead of img from stream + options with autoplay
-2) add youtube the newest movie and show it with link && title instead fb group (refreshing more times)
-3) ADD bug report to my mail
-4) review all errors
+1) add youtube the newest movie and show it with link && title instead fb group (refreshing more times)
+2) ADD bug report to my mail/ticket on github
+3) review all errors
 .
 .
 .
