@@ -93,31 +93,32 @@ function getOptions(){
 	chrome.storage.sync.get([
 		"options"
 	],function(items){
-		var itemsArray = JSON.parse(items.options);
-		var miliseconds, interval, volumeLevelPercent;
+		if(typeof items.options == "undefined"){
+			setDefaultFirstOptions();
+		}
+		else{
+			var itemsArray = JSON.parse(items.options);
+			var miliseconds, interval, volumeLevelPercent;
 
-		if(itemsArray.length == 4){
-			if(itemsArray[0] === false && itemsArray[1] === false){
-				miliseconds = 0;
-				clearInterval(interval);
+			if(itemsArray.length == 2){
+				if(itemsArray[0] != false && itemsArray[1] != false){
+					clearInterval(interval);
+					//3 minutes
+					miliseconds = 180000;
+					interval = setInterval(checkLiveStream,miliseconds);
+
+					volumeLevelPercent = itemsArray[1];
+					volumeLevelDecimal = itemsArray[1] * 0.01;
+				}
 			}
 			else{
 				clearInterval(interval);
-				miliseconds = itemsArray[1] * 60000;
-				interval = setInterval(checkLiveStream, miliseconds);
-			}
+				//3 minutes
+				miliseconds = 180000;
+				interval = setInterval(checkLiveStream,miliseconds);
 
-			if(itemsArray[2] != false && itemsArray[3] != false){
-				volumeLevelPercent = itemsArray[3];
-				volumeLevelDecimal = itemsArray[3] * 0.01;
+				volumeLevelDecimal = 0.5;
 			}
-		}
-		else{
-			clearInterval(interval);
-			miliseconds = 3600000;
-			interval = setInterval(checkLiveStream,miliseconds);
-
-			volumeLevelDecimal = 0.5;
 		}
 	});
 }
@@ -128,6 +129,18 @@ getOptions();
 chrome.storage.onChanged.addListener(function(){
 	getOptions();
 });
+
+//setting first default options - ONLY ON FIRST RUN
+function setDefaultFirstOptions(){
+	var arrayValues = [true,'50'];
+	var jsonArray = JSON.stringify(arrayValues);
+
+	chrome.storage.sync.set({
+		"options":jsonArray
+	});
+
+	getOptions();
+}
 
 //start audio play - only when stream starts
 function playMusic(volumeLevel){

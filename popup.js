@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	  	chrome.browserAction.setBadgeBackgroundColor({color:[208, 0, 24, 255]});
  		chrome.browserAction.setBadgeText({text:"ON"});
 
-		status.innerHTML = "<p class='handler__text'>Tytuł streama: "+streamTitle+"</p><p class='handler__text'>Gra: "+streamGame+"</p><p class='handler__text'> Bynie online: <span class='handler__text-live'>"+streamLiveViewers+"</span></p><p class='handler__text'>Live trwa od: "+outputTime+"</p><a href='https://twitch.tv/pago3/' target='_blank' class='handler__text__stream text-xs-center'><img src='"+streamPreviewMedium+"'/></a><a href='https://twitch.tv/pago3' target='_blank' class='handler__text-button-watch'>Oglądaj bynia!</a>";
+		status.innerHTML = "<p class='handler__text'>Tytuł streama: "+streamTitle+"</p><p class='handler__text'>Gra: "+streamGame+"</p><p class='handler__text'> Bynie online: <span class='handler__text-live'>"+streamLiveViewers+"</span></p><p class='handler__text'>Live trwa od: "+outputTime+"</p><a href='https://twitch.tv/pago3/' target='_blank' class='handler__text__stream text-xs-center'><iframe src='http://player.twitch.tv/?channel=PAGO3' height='220' width='390' frameborder='0' scrolling='yes' allowfullscreen='false'></iframe></a><a href='https://twitch.tv/pago3' target='_blank' class='handler__text-button-watch'>Oglądaj bynia!</a>";
 	},
 	function(streamOff){
 		var status = document.getElementById('status');
@@ -143,31 +143,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 
 	//range - options
-	document.getElementById("range").addEventListener("mousemove", function(){
-		rangeOptions("range","rangeValue","min");
-	});
 	document.getElementById("volume").addEventListener("mousemove", function(){
 		rangeOptions("volume","volumeValue","%");
-	});
-
-	//setting timeout time of call twitch api - options
-	document.getElementById("timeout").addEventListener("click", function(){
-		var timeout = document.getElementById("timeout");
-		var range = document.getElementById("range");
-		var rangeValue = document.getElementById("rangeValue");
-
-		var valueCheckbox = timeout.checked;
-
-		if(valueCheckbox == true){
-			timeout.checked = true;
-			range.disabled = false;
-			range.value = 60;
-			rangeValue.innerHTML = "60min";
-		}
-		else{
-			range.disabled = true;
-			rangeValue.innerHTML = "Opcja wyłaczona";
-		}
 	});
 
 	//setting volume height of audio alert - options
@@ -194,11 +171,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	var arrayValues = new Array();
 	document.getElementById("saveFunctions").addEventListener("click", function(){
 		arrayValues = [];
-		var timeoutCheckboxValue = document.getElementById("timeout").checked;
 		var voiceAlertCheckboxValue = document.getElementById("voiceAlert").checked;
-
-			arrayValues.push(timeoutCheckboxValue);
-		pushToLocalStorage(timeoutCheckboxValue,"range");
 
 			arrayValues.push(voiceAlertCheckboxValue);
 		pushToLocalStorage(voiceAlertCheckboxValue,"volume");
@@ -220,46 +193,25 @@ document.addEventListener('DOMContentLoaded', function() {
 			var itemsArray = JSON.parse(items.options);
 
 			//DOM elements - START
-			var timeout = document.getElementById("timeout");
-			var range = document.getElementById("range");
-			var rangeValue = document.getElementById("rangeValue");
-
 			var voiceAlert = document.getElementById("voiceAlert");
 			var volume = document.getElementById("volume");
 			var volumeValue = document.getElementById("volumeValue");
 			//DOM elements - END
 
-			if(itemsArray.length == 4){
+			if(itemsArray.length == 2){
 				if(itemsArray[0] === false && itemsArray[1] === false){
-					timeout.checked = itemsArray[0];
-					range.disabled = true;
-					rangeValue.innerHTML = "Opcja wyłaczona";
-				}
-				else{
-					timeout.checked = itemsArray[0];
-					range.disabled = false;
-					range.value = itemsArray[1];
-					rangeValue.innerHTML = itemsArray[1]+" minut";
-				}
-
-				if(itemsArray[2] === false && itemsArray[3] === false){
-					voiceAlert.checked = itemsArray[2];
+					voiceAlert.checked = itemsArray[0];
 					volume.disabled = true;
 					volumeValue.innerHTML = "Opcja wyłaczona";
 				}
 				else{
-					voiceAlert.checked = itemsArray[2];
+					voiceAlert.checked = itemsArray[0];
 					volume.disabled = false;
-					volume.value = itemsArray[3];
-					volumeValue.innerHTML = itemsArray[3]+"%";
+					volume.value = itemsArray[1];
+					volumeValue.innerHTML = itemsArray[1]+"%";
 				}
 			}
 			else{
-				timeout.checked = true;
-				range.disabled = false;
-				range.value = 60;
-				rangeValue.innerHTML = "60 minut";
-
 				voiceAlert.checked = true;
 				volume.disabled = false;
 				volume.value = 50;
@@ -347,10 +299,10 @@ document.addEventListener('DOMContentLoaded', function() {
 /****
 
 TO DO:
-1) nottifications in toolbar chrome - need permission/knowledge
-2) ADD option with live iframe instead of img from stream + options with autoplay
-3) review all errors
-4) add youtube the newest movie and show it with link && title instead fb group (refreshing more times)
+1) ADD option with live iframe instead of img from stream + options with autoplay
+2) add youtube the newest movie and show it with link && title instead fb group (refreshing more times)
+3) ADD bug report to my mail
+4) review all errors
 .
 .
 .
