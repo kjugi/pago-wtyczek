@@ -30,6 +30,12 @@ svg:hover{
 	fill:#6441a4;
 }
 
+iframe{
+	margin-left:-10px;
+	margin-top:10px;
+	margin-bottom:10px;
+}
+
 .menu {
 	background: #17141f;
 	max-height:30px;
