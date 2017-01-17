@@ -338,7 +338,8 @@ document.addEventListener('DOMContentLoaded', function() {
 /****
 
 TO DO:
-1) ADD bug report to my mail/ticket on github
+1) ADD nottifications in toolbar chrome ONLY WHEN STREAM STARTS - need permission/knowledge
+2) ADD bug report to my mail/ticket on github
 2) add youtube the newest movie and show it with link && title instead fb group (refreshing more times) - UP TO TEST
 3) review all errors
 
