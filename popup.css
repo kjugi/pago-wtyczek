@@ -31,7 +31,6 @@ svg:hover{
 }
 
 iframe{
-	margin-left:-10px;
 	margin-top:10px;
 	margin-bottom:10px;
 }
@@ -82,7 +81,7 @@ iframe{
 }
 
 .handler{
-	width:100%;
+	width:calc(100% - 10px);
 	padding:10px 5px 10px 5px;
 }
 
