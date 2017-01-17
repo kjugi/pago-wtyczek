@@ -341,9 +341,6 @@ TO DO:
 1) ADD bug report to my mail/ticket on github
 2) add youtube the newest movie and show it with link && title instead fb group (refreshing more times) - UP TO TEST
 3) review all errors
-.
-.
-.
-x) minute word rendering function - not really needed
+
 
 ****/
