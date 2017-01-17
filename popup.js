@@ -62,7 +62,7 @@ function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-	
+
 	//checking stream status in twitch API - big function - START
 	getTwitchStreamStatus(function(streamTitle, streamGame, streamLiveViewers, streamLiveDate, streamPreviewMedium) {
 
@@ -113,7 +113,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	  	chrome.browserAction.setBadgeBackgroundColor({color:[208, 0, 24, 255]});
  		chrome.browserAction.setBadgeText({text:"ON"});
 
-		status.innerHTML = "<p class='handler__text'>Tytuł streama: "+streamTitle+"</p><p class='handler__text'>Gra: "+streamGame+"</p><p class='handler__text'> Bynie online: <span class='handler__text-live'>"+streamLiveViewers+"</span></p><p class='handler__text'>Live trwa od: "+outputTime+"</p><a href='https://twitch.tv/pago3/' target='_blank' class='handler__text__stream text-xs-center'><iframe src='http://player.twitch.tv/?channel=PAGO3' height='220' width='390' frameborder='0' scrolling='yes' allowfullscreen='false'></iframe></a><a href='https://twitch.tv/pago3' target='_blank' class='handler__text-button-watch'>Oglądaj bynia!</a>";
+		status.innerHTML = "<p class='handler__text'>Tytuł streama: "+streamTitle+"</p><p class='handler__text'>Gra: "+streamGame+"</p><p class='handler__text'> Bynie online: <span class='handler__text-live'>"+streamLiveViewers+"</span></p><p class='handler__text'>Live trwa od: "+outputTime+"</p><p class='handler__text'><iframe src='http://player.twitch.tv/?channel=PAGO3' height='220' width='390' frameborder='0' scrolling='yes' allowfullscreen='false'></iframe></p><a href='https://twitch.tv/pago3' target='_blank' class='handler__text-button-watch'>Oglądaj bynia!</a>";
+
+		getLastYoutubeVideo();
 	},
 	function(streamOff){
 		var status = document.getElementById('status');
@@ -121,7 +123,9 @@ document.addEventListener('DOMContentLoaded', function() {
 		chrome.browserAction.setIcon({path: "icons/icon_default.png"});
 		chrome.browserAction.setBadgeText({text: ''});
 
-		status.innerHTML = "<p class='handler__text text-xs-center'>"+streamOff+"</p><img src='icons/dead_glitch.png' class='image-center'/><p class='handler__text'>Sprawdź co na naszej grupie: <a href='https://www.facebook.com/groups/1721694058053294/' target='_blank'>Bynie Pągowskiego</a></p>";
+		status.innerHTML = "<p class='handler__text text-xs-center'>"+streamOff+"</p><img src='icons/dead_glitch.png' class='image-center'/>";
+
+		getLastYoutubeVideo();
 	},
 	function(errorMessage) {
 		showInfo("error");
@@ -294,6 +298,41 @@ document.addEventListener('DOMContentLoaded', function() {
 	if(typeof backgroundPage.audio != "undefined"){
  		backgroundPage.audio.pause();
  	}
+
+	//getting last uploaded video on youtube - START
+ 	function getLastYoutubeVideo(){
+ 		//step 1 of 3 - getting channel id
+ 		// have this by api call one time - id doesn't change
+ 		var channelId = "UCGoROGG58vNiS0SnV7VBz1Q";
+
+ 		//step 2 of 3 - getting video from channel
+ 		var data = null;
+
+		var xhr = new XMLHttpRequest();
+		xhr.withCredentials = true;
+
+		xhr.open("GET", "https://www.googleapis.com/youtube/v3/search?order=date&part=snippet&channelId="+channelId+"&key=AIzaSyA15VDfUfP5n9kflo544YvPRmt4ljsC-IY&maxResults=1&type=video");
+		xhr.send(data);
+
+		xhr.addEventListener("readystatechange", function () {
+		  if (this.readyState === 4) {
+		    var jsonResponse1 = JSON.parse(this.responseText);
+		    var videoId = jsonResponse1.items[0].id.videoId;
+		    var title = jsonResponse1.items[0].snippet.title;
+
+		    //step 3 of 3 - returning information to popup
+		    var status = document.getElementById('status');
+
+		    var statusValue = status.innerHTML;
+		    var additionalValue = "<p class='handler__text'>Zobacz ostatni film na YT: <a href='https://www.youtube.com/watch?v="+videoId+"' target='_blank'>"+title+"</a></p>";
+
+		    var newValue = statusValue+additionalValue;
+
+		    status.innerHTML = newValue;
+		  }
+		});
+ 	}
+ 	//getting last uploaded video on youtube - START
 });
 
 /****
