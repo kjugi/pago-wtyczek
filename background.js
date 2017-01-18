@@ -154,7 +154,7 @@ function playMusic(volumeLevel){
 	}
 
 	//to stop playing/showing nottications till the stream will ends
-	oneMoreTimeHomie = false;
+	//oneMoreTimeHomie = false;
 }
 
 //functions to notifications when stream is LIVE
