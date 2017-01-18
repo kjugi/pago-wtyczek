@@ -338,9 +338,11 @@ document.addEventListener('DOMContentLoaded', function() {
 /****
 
 TO DO:
-1) ADD bug report to my mail/ticket on github -- NEED MORE TIME + thoughts
-2) add youtube the newest movie and show it with link && title instead fb group (refreshing more times) - UP TO TEST
-3) review all errors
+1) ADD notification with new movie from YOUTUBE API
+1.1) repair notification showing with var oneMoreTimeHomie;
+2) ADD bug report to my mail/ticket on github -- NEED MORE TIME + thoughts
+3) add youtube the newest movie and show it with link && title instead fb group (refreshing more times) - UP TO TEST
+4) review all errors
 
 
 ****/
