@@ -6,8 +6,8 @@ Kappa
 #PAPUT
 */
 
-//variable to playing PAGO audio - łapki w góre
-var oneMoreTimeHomie = true, audio, volumeLevelDecimal;
+//variable to playing PAGO audio/showing nottications - łapki w góre
+var oneMoreTimeHomie = true, audio, volumeLevelDecimal, showNotificationVal = null;
 
 function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
 	//one streamer extension PAGO3
@@ -72,6 +72,7 @@ function checkLiveStream(){
 
  		//start audio play - only when stream start
  		playMusic(volumeLevelDecimal);
+ 		showNotification();
 	},
 	function(streamOff){
 		chrome.browserAction.setIcon({path: "icons/icon_default.png"});
@@ -152,7 +153,43 @@ function playMusic(volumeLevel){
 		}
 	}
 
-	//to stop playing till the stream will ends
+	//to stop playing/showing nottications till the stream will ends
 	oneMoreTimeHomie = false;
 }
 
+//functions to notifications when stream is LIVE
+//basic showingNotification
+function showNotification() {
+	if(oneMoreTimeHomie == true){
+	 	chrome.notifications.create('', {
+	        type: 'basic',
+	        iconUrl: 'icons/icon_1.png',
+	        title: 'Pago właśnie nadaje live',
+			buttons: [{title:'Ogladaj'},{title:"Zamknij"}],
+	        message: 'Pago włączył właśnie live stream\'a'
+	    }, function(id) {
+	    	showNotificationVal = id;
+	    });
+   	}
+
+   	//to stop playing/showing nottications till the stream will ends
+	oneMoreTimeHomie = false;
+}
+
+//what happened when user click on button - OPEN LINK WITH STREAM / OPEN EXTENSION WINDOW
+chrome.notifications.onButtonClicked.addListener(function(notificationId, buttonId){
+    if (notificationId === showNotificationVal){
+        if(buttonId === 0){
+            window.open("http://twitch.tv/pago3");
+        } 
+        else if(buttonId === 1){
+            chrome.notifications.clear(notificationId,function(){ //..
+            });
+        }
+    }
+});
+
+//what happened when user click on nottification - OPEN LINK WITH STREAM
+chrome.notifications.onClicked.addListener(function(){
+	window.open("http://twitch.tv/pago3");
+});
