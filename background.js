@@ -7,7 +7,7 @@ Kappa
 */
 
 //variable to playing PAGO audio/showing nottications - łapki w góre
-var oneMoreTimeHomie = true, audio, volumeLevelDecimal, showNotificationVal = null;
+var oneMoreTimeHomie = true, audio, volumeLevelDecimal, showNotificationVal = null, videoId, videoTitle;
 
 function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
 	//one streamer extension PAGO3
@@ -161,7 +161,7 @@ function playMusic(volumeLevel){
 //basic showingNotification
 function showNotification() {
 	if(oneMoreTimeHomie == true){
-	 	chrome.notifications.create('', {
+	 	chrome.notifications.create('twitch', {
 	        type: 'basic',
 	        iconUrl: 'icons/icon_1.png',
 	        title: 'Pago właśnie nadaje live',
@@ -179,9 +179,12 @@ function showNotification() {
 //what happened when user click on button - OPEN LINK WITH STREAM / OPEN EXTENSION WINDOW
 chrome.notifications.onButtonClicked.addListener(function(notificationId, buttonId){
     if (notificationId === showNotificationVal){
-        if(buttonId === 0){
+        if(buttonId === 0 && notificationId == "twitch"){
             window.open("http://twitch.tv/pago3");
-        } 
+        }
+        else if(buttonId === 0 && notificationId == "youtube"){
+        	window.open("https://www.youtube.com/watch?v="+videoId);
+        }
         else if(buttonId === 1){
             chrome.notifications.clear(notificationId,function(){ //..
             });
@@ -190,6 +193,87 @@ chrome.notifications.onButtonClicked.addListener(function(notificationId, button
 });
 
 //what happened when user click on nottification - OPEN LINK WITH STREAM
-chrome.notifications.onClicked.addListener(function(){
-	window.open("http://twitch.tv/pago3");
+chrome.notifications.onClicked.addListener(function(notificationId){
+	if (notificationId === showNotificationVal){
+        if(notificationId == "twitch"){
+			window.open("http://twitch.tv/pago3");
+		}
+		else if(notificationId == "youtube"){
+        	window.open("https://www.youtube.com/watch?v="+videoId);
+        }
+	}
 });
+
+//getting last uploaded video on youtube - START
+
+function getYoutubeStorage(){
+	chrome.storage.sync.get([
+		"youtube"
+	],function(items){
+		if(typeof items.youtube == "undefined"){
+			setDefaultYoutubeOptions();
+			showYoutubeNotification();
+		}
+		else{
+			var itemsArray = JSON.parse(items.youtube);
+			var interval2;
+
+			if(itemsArray[0] != videoId){
+				clearInterval(interval2);
+				showYoutubeNotification();
+				interval2 = setInterval(getLastYoutubeVideo,3600000);
+			}
+		}
+	});
+}
+
+function setDefaultYoutubeOptions(){
+	var videoIdArray = [videoId];
+	var jsonArray = JSON.stringify(videoIdArray);
+
+	chrome.storage.sync.set({
+		"youtube":jsonArray
+	});
+
+	getYoutubeStorage();
+}
+
+function getLastYoutubeVideo(){
+	//step 1 of 3 - getting channel id
+	// have this by api call one time - id doesn't change
+	var channelId = "UCGoROGG58vNiS0SnV7VBz1Q";
+
+	//step 2 of 3 - getting video from channel
+	var data = null;
+
+	var xhr = new XMLHttpRequest();
+	xhr.withCredentials = true;
+
+	xhr.open("GET", "https://www.googleapis.com/youtube/v3/search?order=date&part=snippet&channelId="+channelId+"&key=AIzaSyA15VDfUfP5n9kflo544YvPRmt4ljsC-IY&maxResults=1&type=video");
+	xhr.send(data);
+
+	xhr.addEventListener("readystatechange", function () {
+		if (this.readyState === 4) {
+			var jsonResponse1 = JSON.parse(this.responseText);
+			videoId = jsonResponse1.items[0].id.videoId;
+			videoTitle = jsonResponse1.items[0].snippet.title;
+
+			getYoutubeStorage();
+		}
+	});
+}
+
+function showYoutubeNotification() {
+ 	chrome.notifications.create('youtube', {
+        type: 'basic',
+        iconUrl: 'icons/icon_1.png',
+        title: 'Widziałeś nowy film PAGO3?',
+		buttons: [{title:'Ogladaj'},{title:"Zamknij"}],
+        message: videoTitle
+    }, function(id) {
+    	showNotificationVal = id;
+    });
+}
+
+getLastYoutubeVideo();
+//getting last uploaded video on youtube - END
