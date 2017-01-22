@@ -338,9 +338,6 @@ document.addEventListener('DOMContentLoaded', function() {
 /****
 
 TO DO:
-1) repair notification showing with var oneMoreTimeHomie;
-2) add youtube the newest movie and show it with link && title instead fb group (refreshing more times) - UP TO TEST
-3) review all errors
-
+1) review all errors - HALF PUBLIC TESTS
 
 ****/
