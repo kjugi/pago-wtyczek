@@ -152,9 +152,6 @@ function playMusic(volumeLevel){
 			audio.play();
 		}
 	}
-
-	//to stop playing/showing nottications till the stream will ends
-	//oneMoreTimeHomie = false;
 }
 
 //functions to notifications when stream is LIVE
@@ -212,22 +209,23 @@ function getYoutubeStorage(){
 	],function(items){
 		if(typeof items.youtube == "undefined"){
 			setDefaultYoutubeOptions();
-			showYoutubeNotification();
+			setYoutubeOptions();
 		}
 		else{
 			var itemsArray = JSON.parse(items.youtube);
 			var interval2;
 
 			if(itemsArray[0] != videoId){
+				setYoutubeOptions();
 				clearInterval(interval2);
 				showYoutubeNotification();
-				interval2 = setInterval(getLastYoutubeVideo,3600000);
+				interval2 = setInterval(getLastYoutubeVideo,600000);
 			}
 		}
 	});
 }
 
-function setDefaultYoutubeOptions(){
+function setYoutubeOptions(){
 	var videoIdArray = [videoId];
 	var jsonArray = JSON.stringify(videoIdArray);
 
