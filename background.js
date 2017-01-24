@@ -29,7 +29,7 @@ function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
   	xhr.onload = function() {
 	    var response = JSON.parse(xhr.responseText);
 
-	    if (!response) {
+	    if(!response){
 	      showInfo("error");
 	      errorCallback('No response from TWITCH API!');
 	      return;
@@ -56,7 +56,7 @@ function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
 			streamOff(streamNull);
 		}
 	};
-	xhr.onerror = function() {
+	xhr.onerror = function(){
 		showInfo("error");
 	    errorCallback('Network error.');
 	};
@@ -65,7 +65,7 @@ function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
 
 //checking on welcome if stream is live function - START
 function checkLiveStream(){
-	getTwitchStreamStatus(function(streamTitle, streamGame, streamLiveViewers, streamLiveDate, streamPreviewMedium) {
+	getTwitchStreamStatus(function(streamTitle, streamGame, streamLiveViewers, streamLiveDate, streamPreviewMedium){
 		chrome.browserAction.setIcon({path: "icons/icon_1.png"});
 		chrome.browserAction.setBadgeBackgroundColor({color:[208, 0, 24, 255]});
  		chrome.browserAction.setBadgeText({text:"ON"});
@@ -81,7 +81,7 @@ function checkLiveStream(){
 		//to play again when stream went on
 		oneMoreTimeHomie = true;
 	},
-	function(errorMessage) {
+	function(errorMessage){
 		showInfo("error");
 	  	console.log('Cannot display information. ' + errorMessage);
 	});
@@ -251,7 +251,7 @@ function getLastYoutubeVideo(){
 	xhr.send(data);
 
 	xhr.addEventListener("readystatechange", function () {
-		if (this.readyState === 4) {
+		if(this.readyState === 4){
 			var jsonResponse1 = JSON.parse(this.responseText);
 			videoId = jsonResponse1.items[0].id.videoId;
 			videoTitle = jsonResponse1.items[0].snippet.title;
@@ -268,7 +268,7 @@ function showYoutubeNotification() {
         title: 'Widziałeś nowy film PAGO3?',
 		buttons: [{title:'Ogladaj'},{title:"Zamknij"}],
         message: videoTitle
-    }, function(id) {
+    },function(id){
     	showNotificationVal = id;
     });
 }
