@@ -173,7 +173,7 @@ function showNotification() {
 	oneMoreTimeHomie = false;
 }
 
-//what happened when user click on button - OPEN LINK WITH STREAM / OPEN EXTENSION WINDOW
+//what happened when user click on button - OPEN LINK WITH STREAM / CLOSE NOTIFICATION
 chrome.notifications.onButtonClicked.addListener(function(notificationId, buttonId){
     if (notificationId === showNotificationVal){
         if(buttonId === 0 && notificationId == "twitch"){
@@ -208,7 +208,6 @@ function getYoutubeStorage(){
 		"youtube"
 	],function(items){
 		if(typeof items.youtube == "undefined"){
-			setDefaultYoutubeOptions();
 			setYoutubeOptions();
 		}
 		else{
