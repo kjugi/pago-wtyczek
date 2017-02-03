@@ -216,10 +216,11 @@ function getYoutubeStorage(){
 
 			if(itemsArray[0] != videoId){
 				setYoutubeOptions();
-				clearInterval(interval2);
 				showYoutubeNotification();
-				interval2 = setInterval(getLastYoutubeVideo,600000);
 			}
+
+			clearInterval(interval2);
+			interval2 = setInterval(getLastYoutubeVideo,600000);
 		}
 	});
 }
