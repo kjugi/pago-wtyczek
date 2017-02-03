@@ -252,10 +252,13 @@ function getLastYoutubeVideo(){
 	xhr.addEventListener("readystatechange", function () {
 		if(this.readyState === 4){
 			var jsonResponse1 = JSON.parse(this.responseText);
-			videoId = jsonResponse1.items[0].id.videoId;
-			videoTitle = jsonResponse1.items[0].snippet.title;
 
-			getYoutubeStorage();
+			if(typeof jsonResponse1 != "undefined"){
+				videoId = jsonResponse1.items[0].id.videoId;
+				videoTitle = jsonResponse1.items[0].snippet.title;
+
+				getYoutubeStorage();
+			}
 		}
 	});
 }
