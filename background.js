@@ -7,7 +7,7 @@ Kappa
 */
 
 //variable to playing PAGO audio/showing nottications - łapki w góre
-var oneMoreTimeHomie = true, audio, volumeLevelDecimal, showNotificationVal = null, videoId, videoTitle;
+var oneMoreTimeHomie = true, audio, volumeLevelDecimal, showNotificationVal = null, videoId, videoTitle, interval, intervalSecond;
 
 function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
 	//one streamer extension PAGO3
@@ -99,7 +99,7 @@ function getOptions(){
 		}
 		else{
 			var itemsArray = JSON.parse(items.options);
-			var miliseconds, interval, volumeLevelPercent;
+			var miliseconds, volumeLevelPercent;
 
 			if(itemsArray.length == 2){
 				if(itemsArray[0] != false && itemsArray[1] != false){
@@ -212,15 +212,14 @@ function getYoutubeStorage(){
 		}
 		else{
 			var itemsArray = JSON.parse(items.youtube);
-			var interval2;
 
 			if(itemsArray[0] != videoId){
 				setYoutubeOptions();
 				showYoutubeNotification();
 			}
 
-			clearInterval(interval2);
-			interval2 = setInterval(getLastYoutubeVideo,600000);
+			clearInterval(intervalSecond);
+			intervalSecond = setInterval(getLastYoutubeVideo,600000);
 		}
 	});
 }
