@@ -339,5 +339,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 TO DO:
 1) review all errors - HALF PUBLIC TESTS
+2) ADD - hide or encrypt api codes from twitch and youtube (or load from other file)
 
 ****/
