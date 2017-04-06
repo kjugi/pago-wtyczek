@@ -12,8 +12,8 @@ function getTwitchStreamStatus(streamOn, streamOff, errorCallback){
 	//demo mode: on
 	//https://api.twitch.tv/kraken/streams/40378922?client_id=dlw882cebptkltr33a4s0ejzongxfg
 
-	var streamerID = "40378922";
-	var client_id = "dlw882cebptkltr33a4s0ejzongxfg";
+	var streamerID = "29468517";
+	var client_id = "5nse74t52qqb3gxp1734zsvbvwtz98";
 	var url = "https://api.twitch.tv/kraken/streams/";
   	var data = null;
 
@@ -311,7 +311,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		var xhr = new XMLHttpRequest();
 		xhr.withCredentials = true;
 
-		xhr.open("GET", "https://www.googleapis.com/youtube/v3/search?order=date&part=snippet&channelId="+channelId+"&key=AIzaSyA15VDfUfP5n9kflo544YvPRmt4ljsC-IY&maxResults=1&type=video");
+		xhr.open("GET", "https://www.googleapis.com/youtube/v3/search?order=date&part=snippet&channelId="+channelId+"&key=AIzaSyC_eZRDO9yfuGr2t31B1OrQmzO-nzdQXAE&maxResults=1&type=video");
 		xhr.send(data);
 
 		xhr.addEventListener("readystatechange", function () {
@@ -339,6 +339,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
 TO DO:
 1) review all errors - HALF PUBLIC TESTS
-2) ADD - hide or encrypt api codes from twitch and youtube (or load from other file)
 
 ****/
